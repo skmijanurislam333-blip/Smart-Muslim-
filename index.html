@@ -1,0 +1,98 @@
+
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Smart Muslim</title>
+<style>
+*{box-sizing:border-box}
+body{margin:0;background:#f4f7f2;color:#173c30;font-family:Arial,sans-serif}
+header{background:#075b43;color:white;padding:25px 20px;border-radius:0 0 25px 25px}
+header h1{margin:0;font-size:27px}
+header p{margin-bottom:0;color:#d5eee2}
+main{padding:16px;max-width:600px;margin:auto}
+.card{background:white;padding:18px;margin:13px 0;border-radius:16px;box-shadow:0 3px 12px #0000000c}
+h2{font-size:19px;margin:0 0 12px}
+.prayer{background:#075b43;color:white}
+.prayer p{color:#d5eee2}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.item{text-align:center;padding:20px 8px;background:white;border-radius:15px;box-shadow:0 2px 9px #0000000b}
+.item span{font-size:28px}
+button{background:#087653;color:white;border:0;border-radius:10px;padding:12px 18px;font-size:15px}
+input,select{padding:12px;border:1px solid #ccc;border-radius:9px;width:100%;margin:8px 0}
+#count{font-size:38px;font-weight:bold;margin:15px}
+footer{text-align:center;padding:20px;color:#688276}
+</style>
+</head>
+<body>
+<header>
+<h1>🌙 Smart Muslim</h1>
+<p>আলহামদুলিল্লাহ! Welcome to Smart Muslim</p>
+</header>
+<main>
+<div class="card prayer">
+<h2>🕌 আসসালামু আলাইকুম</h2>
+<p>আপনার প্রতিদিনের ইসলামিক সঙ্গী</p>
+<h2>بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ</h2>
+<p>আজকের নামাজের সময়সূচি</p>
+<p>Fajr | Dhuhr | Asr | Maghrib | Isha</p>
+<small>নামাজের সঠিক সময় পেতে পরবর্তী সংস্করণে লোকেশন ও সময়সূচি যুক্ত হবে।</small>
+</div>
+
+<div class="card">
+<h2>📖 পবিত্র কুরআন</h2>
+<p>কুরআন পড়ুন এবং আল্লাহর বাণী জানুন।</p>
+<button onclick="alert('কুরআন বিভাগ শীঘ্রই যুক্ত হবে')">কুরআন পড়ুন</button>
+</div>
+
+<h2>🌙 ইসলামিক ফিচার</h2>
+<div class="grid">
+<div class="item" onclick="show('Hadith')"><span>📚</span><p>হাদিস</p></div>
+<div class="item" onclick="show('Dua')"><span>🤲</span><p>দোয়া</p></div>
+<div class="item" onclick="show('Qibla')"><span>🧭</span><p>কিবলা</p></div>
+<div class="item" onclick="show('Calendar')"><span>🌙</span><p>ইসলামিক ক্যালেন্ডার</p></div>
+<div class="item" onclick="show('Names')"><span>✨</span><p>আল্লাহর ৯৯ নাম</p></div>
+<div class="item" onclick="show('Tasbih')"><span>📿</span><p>ডিজিটাল তাসবিহ</p></div>
+</div>
+
+<div class="card">
+<h2>📿 ডিজিটাল তাসবিহ</h2>
+<div id="count">0</div>
+<button onclick="increment()">গণনা করুন</button>
+<button onclick="resetCount()" style="background:#777">Reset</button>
+</div>
+
+<div class="card">
+<h2>🌐 Language / ভাষা</h2>
+<select onchange="changeLang(this.value)">
+<option value="bn">বাংলা</option>
+<option value="en">English</option>
+<option value="ar">العربية</option>
+</select>
+</div>
+<div class="card">
+<h2>আলহামদুলিল্লাহ ❤️</h2>
+<p>আল্লাহ আমাদের সবাইকে সঠিক পথে চলার তৌফিক দান করুন। আমিন।</p>
+</div>
+</main>
+<footer>© 2026 Smart Muslim</footer>
+<script>
+let count=0;
+function increment(){
+count++;
+document.getElementById('count').innerText=count;
+}
+function resetCount(){
+count=0;
+document.getElementById('count').innerText=count;
+}
+function show(name){
+alert(name+' বিভাগ শীঘ্রই যুক্ত হবে, ইনশাআল্লাহ।');
+}
+function changeLang(lang){
+alert('Selected language: '+lang);
+}
+</script>
+</body>
+</html>
