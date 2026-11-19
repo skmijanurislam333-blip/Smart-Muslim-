@@ -91,6 +91,23 @@ footer{text-align:center;padding:25px;color:#527267}
   <br><br>
   <button onclick="document.getElementById('tasbih').style.display='none'" style="background:#222;color:white;padding:10px 20px;border:0;border-radius:10px;">বন্ধ করুন</button>
 </div>
+
+ 
+<div id="quran" style="display:none;background:#075c45;color:white;padding:20px;border-radius:20px;margin:20px 0;">
+  <h2>📖 আল-কুরআন শরীফ</h2>
+  <p>সূরা নির্বাচন করো</p>
+
+  <select id="surahSelect" onchange="loadSurah()" style="width:100%;padding:14px;border-radius:10px;font-size:16px;">
+    <option value="">সূরা লোড হচ্ছে...</option>
+  </select>
+
+  <p id="quranStatus">সূরার তালিকা লোড হচ্ছে...</p>
+  <div id="ayahList"></div>
+
+  <button onclick="document.getElementById('quran').style.display='none'" style="padding:12px 22px;border:0;border-radius:10px;">
+    বন্ধ করুন
+  </button>
+</div>
  
 <footer>
 <p>Smart Muslim © 2026</p>
@@ -99,13 +116,88 @@ footer{text-align:center;padding:25px;color:#527267}
 
 <script>
 
+
 function show(name){
  if(name === 'ডিজিটাল তসবিহ'){
    document.getElementById('tasbih').style.display='block';
- } else {
-   alert(name + ' ফিচারটি শীঘ্রই যুক্ত করা হবে, ইনশাআল্লাহ।');
+ }
+ else if(name === 'কুরআন শরীফ'){
+   document.getElementById('quran').style.display='block';
+   loadSurahList();
+ }
+ else{
+   alert(name + ' ফিচারটি শীঘ্রই যুক্ত করা হবে।');
  }
 }
+
+async function loadSurahList(){
+ const select=document.getElementById('surahSelect');
+ const status=document.getElementById('quranStatus');
+
+ if(select.options.length > 1) return;
+
+ try{
+  status.innerText='সূরার তালিকা লোড হচ্ছে...';
+  const response=await fetch('https://api.alquran.cloud/v1/surah');
+  const result=await response.json();
+
+  if(result.code!==200) throw new Error();
+
+  select.innerHTML='<option value="">সূরা নির্বাচন করো</option>';
+
+  result.data.forEach(s=>{
+   const option=document.createElement('option');
+   option.value=s.number;
+   option.textContent=s.number+'. '+s.englishName+' ('+s.name+')';
+   select.appendChild(option);
+  });
+
+  status.innerText='১১৪টি সূরা পাওয়া গেছে।';
+ }catch(e){
+  status.innerText='ইন্টারনেট পরীক্ষা করে আবার চেষ্টা করো।';
+ }
+}
+
+async function loadSurah(){
+ const number=document.getElementById('surahSelect').value;
+ const list=document.getElementById('ayahList');
+ const status=document.getElementById('quranStatus');
+ if(!number)return;
+
+ list.innerHTML='';
+ status.innerText='আয়াত লোড হচ্ছে...';
+
+ try{
+  const url='https://api.alquran.cloud/v1/surah/'+number+'/editions/quran-uthmani,bn.bengali';
+  const response=await fetch(url);
+  const result=await response.json();
+  if(result.code!==200)throw new Error();
+
+  const ar=result.data[0].ayahs;
+  const bn=result.data[1].ayahs;
+  status.innerText='মোট আয়াত: '+ar.length;
+
+  ar.forEach((a,i)=>{
+   const box=document.createElement('div');
+   box.style.cssText='background:white;color:#173d32;padding:15px;margin:12px 0;border-radius:12px;';
+
+   const arabic=document.createElement('p');
+   arabic.style.cssText='font-size:25px;text-align:right;line-height:2;';
+   arabic.textContent=a.text;
+
+   const bangla=document.createElement('p');
+   bangla.style.cssText='font-size:17px;line-height:1.8;';
+   bangla.textContent=(i+1)+'. '+bn[i].text;
+
+   box.append(arabic,bangla);
+   list.appendChild(box);
+  });
+ }catch(e){
+  status.innerText='আয়াত লোড হয়নি। আবার চেষ্টা করো।';
+ }
+}
+
+
 
 let count = 0;
 
