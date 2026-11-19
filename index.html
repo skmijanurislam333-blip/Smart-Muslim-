@@ -3,96 +3,193 @@
 <html lang="bn">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#075b43">
 <title>Smart Muslim</title>
 <style>
 *{box-sizing:border-box}
-body{margin:0;background:#f4f7f2;color:#173c30;font-family:Arial,sans-serif}
-header{background:#075b43;color:white;padding:25px 20px;border-radius:0 0 25px 25px}
-header h1{margin:0;font-size:27px}
-header p{margin-bottom:0;color:#d5eee2}
-main{padding:16px;max-width:600px;margin:auto}
-.card{background:white;padding:18px;margin:13px 0;border-radius:16px;box-shadow:0 3px 12px #0000000c}
-h2{font-size:19px;margin:0 0 12px}
-.prayer{background:#075b43;color:white}
-.prayer p{color:#d5eee2}
-.grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
-.item{text-align:center;padding:20px 8px;background:white;border-radius:15px;box-shadow:0 2px 9px #0000000b}
-.item span{font-size:28px}
-button{background:#087653;color:white;border:0;border-radius:10px;padding:12px 18px;font-size:15px}
-input,select{padding:12px;border:1px solid #ccc;border-radius:9px;width:100%;margin:8px 0}
-#count{font-size:38px;font-weight:bold;margin:15px}
-footer{text-align:center;padding:20px;color:#688276}
+body{margin:0;background:#f2f7f3;color:#183c30;font-family:Arial,sans-serif}
+header{background:#075b43;color:white;padding:25px;border-radius:0 0 25px 25px}
+main{max-width:700px;margin:auto;padding:15px}
+.card{background:white;padding:17px;margin:13px 0;border-radius:16px;box-shadow:0 2px 10px #0001}
+h2{font-size:19px}
+.hero{background:#075b43;color:white}
+.grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
+.item{background:white;padding:17px 5px;border-radius:14px;text-align:center;cursor:pointer;box-shadow:0 2px 8px #0001}
+.item span{font-size:27px}
+.item p{font-weight:bold;margin-bottom:0}
+button{background:#087653;color:white;border:0;border-radius:10px;padding:12px;margin:4px;cursor:pointer}
+.arabic{font-size:25px;text-align:right;direction:rtl;line-height:2}
+.hidden{display:none}
+.line{padding:10px;border-bottom:1px solid #ddd}
+.time{background:#eaf4ed;padding:12px;border-radius:10px;margin:5px}
+#count{text-align:center;font-size:45px}
+a{color:#087653}
 </style>
 </head>
 <body>
 <header>
 <h1>🌙 Smart Muslim</h1>
-<p>আলহামদুলিল্লাহ! Welcome to Smart Muslim</p>
+<p>আপনার প্রতিদিনের ইসলামিক সঙ্গী</p>
 </header>
 <main>
-<div class="card prayer">
-<h2>🕌 আসসালামু আলাইকুম</h2>
-<p>আপনার প্রতিদিনের ইসলামিক সঙ্গী</p>
-<h2>بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ</h2>
-<p>আজকের নামাজের সময়সূচি</p>
-<p>Fajr | Dhuhr | Asr | Maghrib | Isha</p>
-<small>নামাজের সঠিক সময় পেতে পরবর্তী সংস্করণে লোকেশন ও সময়সূচি যুক্ত হবে।</small>
+<div class="card hero">
+<h2>السلام عليكم ورحمة الله وبركاته</h2>
+<div class="arabic">بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ</div>
+<p>আল্লাহর স্মরণে কাটুক প্রতিটি দিন।</p>
+<p id="date"></p>
+<p id="hijri"></p>
 </div>
 
 <div class="card">
-<h2>📖 পবিত্র কুরআন</h2>
-<p>কুরআন পড়ুন এবং আল্লাহর বাণী জানুন।</p>
-<button onclick="alert('কুরআন বিভাগ শীঘ্রই যুক্ত হবে')">কুরআন পড়ুন</button>
+<h2>🕌 পাঁচ ওয়াক্ত নামাজের সময়</h2>
+<button onclick="prayer()">নামাজের সময় দেখুন</button>
+<p id="status">লোকেশন অনুমতি দিন।</p>
+<div id="times"></div>
 </div>
 
 <h2>🌙 ইসলামিক ফিচার</h2>
 <div class="grid">
-<div class="item" onclick="show('Hadith')"><span>📚</span><p>হাদিস</p></div>
-<div class="item" onclick="show('Dua')"><span>🤲</span><p>দোয়া</p></div>
-<div class="item" onclick="show('Qibla')"><span>🧭</span><p>কিবলা</p></div>
-<div class="item" onclick="show('Calendar')"><span>🌙</span><p>ইসলামিক ক্যালেন্ডার</p></div>
-<div class="item" onclick="show('Names')"><span>✨</span><p>আল্লাহর ৯৯ নাম</p></div>
-<div class="item" onclick="show('Tasbih')"><span>📿</span><p>ডিজিটাল তাসবিহ</p></div>
+<div class="item" onclick="show('quran')"><span>📖</span><p>কুরআন শরিফ</p></div>
+<div class="item" onclick="show('hadith')"><span>📚</span><p>সহিহ হাদিস</p></div>
+<div class="item" onclick="show('dua')"><span>🤲</span><p>দৈনন্দিন দোয়া</p></div>
+<div class="item" onclick="show('qibla')"><span>🧭</span><p>কিবলা কম্পাস</p></div>
+<div class="item" onclick="show('names')"><span>✨</span><p>আল্লাহর ৯৯ নাম</p></div>
+<div class="item" onclick="show('tasbih')"><span>📿</span><p>ডিজিটাল তাসবিহ</p></div>
+<div class="item" onclick="show('calendar')"><span>🌙</span><p>ইসলামিক ক্যালেন্ডার</p></div>
+<div class="item" onclick="show('language')"><span>🌐</span><p>ভাষা</p></div>
 </div>
 
-<div class="card">
+<section id="quran" class="card hidden">
+<h2>📖 পবিত্র কুরআন শরিফ</h2>
+<p>সম্পূর্ণ কুরআন আরবি ও অনুবাদসহ পড়ুন।</p>
+<a href="https://quran.com/" target="_blank">কুরআন খুলুন ↗</a>
+</section>
+
+<section id="hadith" class="card hidden">
+<h2>📚 সহিহ হাদিস</h2>
+<p><a href="https://sunnah.com/bukhari" target="_blank">সহিহ বুখারি পড়ুন ↗</a></p>
+<p><a href="https://sunnah.com/muslim" target="_blank">সহিহ মুসলিম পড়ুন ↗</a></p>
+</section>
+
+<section id="dua" class="card hidden">
+<h2>🤲 দৈনন্দিন দোয়া</h2>
+<div class="line"><b>খাওয়ার আগে</b><div class="arabic">بِسْمِ اللَّهِ</div>অর্থ: আল্লাহর নামে।</div>
+<div class="line"><b>খাওয়ার পরে</b><div class="arabic">الْحَمْدُ لِلَّهِ</div>অর্থ: সমস্ত প্রশংসা আল্লাহর জন্য।</div>
+<div class="line"><b>জ্ঞান বৃদ্ধির দোয়া</b><div class="arabic">رَبِّ زِدْنِي عِلْمًا</div>অর্থ: হে আমার রব, আমার জ্ঞান বৃদ্ধি করুন।</div>
+<div class="line"><b>ক্ষমা প্রার্থনা</b><div class="arabic">أَسْتَغْفِرُ اللَّهَ</div>অর্থ: আমি আল্লাহর কাছে ক্ষমা চাই।</div>
+</section>
+
+<section id="qibla" class="card hidden">
+<h2>🧭 কিবলার দিক</h2>
+<p id="qstatus">আপনার অবস্থান অনুযায়ী কিবলার দিক বের করুন।</p>
+<button onclick="qibla()">কিবলার দিক দেখুন</button>
+<div id="qresult"></div>
+<p>কম্পাসের নির্ভুলতা ফোনের সেন্সরের ওপর নির্ভর করে।</p>
+</section>
+
+<section id="names" class="card hidden">
+<h2>✨ আল্লাহর ৯৯টি নাম</h2>
+<div id="namesList"></div>
+</section>
+
+<section id="tasbih" class="card hidden">
 <h2>📿 ডিজিটাল তাসবিহ</h2>
 <div id="count">0</div>
-<button onclick="increment()">গণনা করুন</button>
-<button onclick="resetCount()" style="background:#777">Reset</button>
-</div>
+<center>
+<button onclick="inc()">গণনা করুন</button>
+<button onclick="reset()">রিসেট</button>
+</center>
+</section>
 
-<div class="card">
-<h2>🌐 Language / ভাষা</h2>
-<select onchange="changeLang(this.value)">
-<option value="bn">বাংলা</option>
-<option value="en">English</option>
-<option value="ar">العربية</option>
-</select>
-</div>
+<section id="calendar" class="card hidden">
+<h2>🌙 ইসলামিক ক্যালেন্ডার</h2>
+<h3 id="hijri2"></h3>
+<p>চাঁদ দেখা অনুযায়ী হিজরি তারিখ এক দিন ভিন্ন হতে পারে।</p>
+</section>
+
+<section id="language" class="card hidden">
+<h2>🌐 ভাষা</h2>
+<p>মূল ইন্টারফেস বাংলা। আরবি ও ইংরেজি অনুবাদের জন্য কুরআনের উৎসে ভাষা নির্বাচন করতে পারবেন।</p>
+<a href="https://quran.com/" target="_blank">ভাষা নির্বাচন করুন ↗</a>
+</section>
+
 <div class="card">
 <h2>আলহামদুলিল্লাহ ❤️</h2>
 <p>আল্লাহ আমাদের সবাইকে সঠিক পথে চলার তৌফিক দান করুন। আমিন।</p>
 </div>
 </main>
-<footer>© 2026 Smart Muslim</footer>
+
 <script>
-let count=0;
-function increment(){
-count++;
-document.getElementById('count').innerText=count;
+const sections=['quran','hadith','dua','qibla','names','tasbih','calendar','language'];
+function show(id){
+sections.forEach(x=>document.getElementById(x).classList.toggle('hidden',x!==id));
+document.getElementById(id).scrollIntoView({behavior:'smooth'});
 }
-function resetCount(){
-count=0;
-document.getElementById('count').innerText=count;
+let count=Number(localStorage.getItem('smcount')||0);
+function draw(){document.getElementById('count').innerText=count}
+function inc(){count++;localStorage.setItem('smcount',count);draw()}
+function reset(){count=0;localStorage.setItem('smcount',0);draw()}
+draw();
+
+let d=new Date();
+document.getElementById('date').innerText=d.toLocaleDateString('bn-BD',{dateStyle:'full'});
+let h=new Intl.DateTimeFormat('bn-u-ca-islamic',{dateStyle:'long'}).format(d);
+document.getElementById('hijri').innerText=h;
+document.getElementById('hijri2').innerText=h;
+
+async function prayer(){
+let s=document.getElementById('status');
+s.innerText='লোকেশন নেওয়া হচ্ছে...';
+navigator.geolocation.getCurrentPosition(async p=>{
+try{
+let url='https://api.aladhan.com/v1/timings?latitude='+p.coords.latitude+'&longitude='+p.coords.longitude+'&method=1';
+let j=await(await fetch(url)).json();
+let t=j.data.timings;
+document.getElementById('times').innerHTML=
+['Fajr','Dhuhr','Asr','Maghrib','Isha'].map(x=>'<div class="time">'+x+' : '+t[x]+'</div>').join('');
+s.innerText='আজকের নামাজের সময়';
+}catch(e){s.innerText='সময় পাওয়া যায়নি। আবার চেষ্টা করুন।'}
+},()=>s.innerText='ফোনের Location চালু করে অনুমতি দিন।');
 }
-function show(name){
-alert(name+' বিভাগ শীঘ্রই যুক্ত হবে, ইনশাআল্লাহ।');
+
+function qibla(){
+document.getElementById('qstatus').innerText='লোকেশন নেওয়া হচ্ছে...';
+navigator.geolocation.getCurrentPosition(p=>{
+let a=p.coords.latitude*Math.PI/180;
+let b=21.4225*Math.PI/180;
+let L=(39.8262-p.coords.longitude)*Math.PI/180;
+let y=Math.sin(L);
+let x=Math.cos(a)*Math.tan(b)-Math.sin(a)*Math.cos(L);
+let v=(Math.atan2(y,x)*180/Math.PI+360)%360;
+document.getElementById('qresult').innerHTML='<h2>'+v.toFixed(1)+'°</h2><p>উত্তর দিক থেকে ঘড়ির কাঁটার দিকে কিবলার কোণ।</p>';
+document.getElementById('qstatus').innerText='আপনার অবস্থান অনুযায়ী কিবলার দিক';
+},()=>document.getElementById('qstatus').innerText='লোকেশন অনুমতি পাওয়া যায়নি।');
 }
-function changeLang(lang){
-alert('Selected language: '+lang);
-}
+
+const names=[
+'الرَّحْمَٰنُ','الرَّحِيمُ','الْمَلِكُ','الْقُدُّوسُ','السَّلَامُ',
+'الْمُؤْمِنُ','الْمُهَيْمِنُ','الْعَزِيزُ','الْجَبَّارُ','الْمُتَكَبِّرُ',
+'الْخَالِقُ','الْبَارِئُ','الْمُصَوِّرُ','الْغَفَّارُ','الْقَهَّارُ',
+'الْوَهَّابُ','الرَّزَّاقُ','الْفَتَّاحُ','الْعَلِيمُ','الْقَابِضُ',
+'الْبَاسِطُ','الْخَافِضُ','الرَّافِعُ','الْمُعِزُّ','الْمُذِلُّ',
+'السَّمِيعُ','الْبَصِيرُ','الْحَكَمُ','الْعَدْلُ','اللَّطِيفُ',
+'الْخَبِيرُ','الْحَلِيمُ','الْعَظِيمُ','الْغَفُورُ','الشَّكُورُ',
+'الْعَلِيُّ','الْكَبِيرُ','الْحَفِيظُ','الْمُقِيتُ','الْحَسِيبُ',
+'الْجَلِيلُ','الْكَرِيمُ','الرَّقِيبُ','الْمُجِيبُ','الْوَاسِعُ',
+'الْحَكِيمُ','الْوَدُودُ','الْمَجِيدُ','الْبَاعِثُ','الشَّهِيدُ',
+'الْحَقُّ','الْوَكِيلُ','الْقَوِيُّ','الْمَتِينُ','الْوَلِيُّ',
+'الْحَمِيدُ','الْمُحْصِي','الْمُبْدِئُ','الْمُعِيدُ','الْمُحْيِي',
+'الْمُمِيتُ','الْحَيُّ','الْقَيُّومُ','الْوَاجِدُ','الْمَاجِدُ',
+'الْوَاحِدُ','الصَّمَدُ','الْقَادِرُ','الْمُقْتَدِرُ','الْمُقَدِّمُ',
+'الْمُؤَخِّرُ','الْأَوَّلُ','الْآخِرُ','الظَّاهِرُ','الْبَاطِنُ',
+'الْوَالِي','الْمُتَعَالِي','الْبَرُّ','التَّوَّابُ','الْمُنْتَقِمُ',
+'الْعَفُوُّ','الرَّؤُوفُ','مَالِكُ الْمُلْكِ','ذُو الْجَلَالِ وَالْإِكْرَامِ',
+'الْمُقْسِطُ','الْجَامِعُ','الْغَنِيُّ','الْمُغْنِي','الْمَانِعُ',
+'الضَّارُّ','النَّافِعُ','النُّورُ','الْهَادِي','الْبَدِيعُ',
+'الْبَاقِي','الْوَارِثُ','الرَّشِيدُ','الصَّبُورُ'
+];
+document.getElementById('namesList').innerHTML=names.map((n,i)=>'<div class="line">'+(i+1)+'. <span class="arabic">'+n+'</span></div>').join('');
 </script>
 </body>
 </html>
